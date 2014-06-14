@@ -17,11 +17,17 @@ class Interactor(object):
         self.encryptor = encryptor
 
     def interact(self):
+        self.validate_password()
+        self.login()
+
+    def validate_password(self):
         encrypted_password = self.repository.get_password_by_username(self.user.username)
-        if self.encryptor.is_correct_password(self.user.password,
-                                              encrypted_password) is not True:
+
+        if self.encryptor.is_same_password(self.user.password,
+                                           encrypted_password) is False:
             raise AuthorisationError
 
+    def login(self):
         self.authenticator.authenticate(self.repository.get_id_by_username(self.user.username))
 
 class Repository(object):

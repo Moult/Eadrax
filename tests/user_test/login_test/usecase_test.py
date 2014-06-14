@@ -24,7 +24,7 @@ def test_loading_a_usecase():
 
 def test_interaction():
     repository.get_password_by_username = Mock(return_value = 'encrypted_password')
-    encryptor.is_correct_password = Mock(return_value = False)
+    encryptor.is_same_password = Mock(return_value = False)
 
     interactor = Interactor(user, repository, authenticator, encryptor)
 
@@ -32,10 +32,10 @@ def test_interaction():
 
     assert interactor.user == user
     repository.get_password_by_username.assert_called_once_with('username')
-    encryptor.is_correct_password.assert_called_once_with('password',
+    encryptor.is_same_password.assert_called_once_with('password',
                                                           'encrypted_password')
 
-    encryptor.is_correct_password = Mock(return_value = True)
+    encryptor.is_same_password = Mock(return_value = True)
     repository.get_id_by_username = Mock(return_value = 'id')
     authenticator.authenticate = Mock()
     interactor.interact()

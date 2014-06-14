@@ -36,7 +36,7 @@ class Encryptor(object):
     def encrypt_password(self, password):
         raise NotImplementedError
 
-    def is_correct_password(self, password, encrypted_password):
+    def is_same_password(self, password, encrypted_password):
         raise NotImplementedError
 
 class Validator(object):
