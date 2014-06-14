@@ -26,8 +26,8 @@ class Interactor(object):
 
 class Repository(object):
 
-    def get_password_by_username(self):
+    def get_password_by_username(self, username):
         raise NotImplementedError
 
-    def get_id_by_username(self):
+    def get_id_by_username(self, username):
         raise NotImplementedError

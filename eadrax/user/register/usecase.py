@@ -27,5 +27,5 @@ class Interactor(object):
 
 class Repository(object):
 
-    def save_user(**user):
+    def save_user(self, **user):
         raise NotImplementedError
