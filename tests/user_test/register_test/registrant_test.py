@@ -1,8 +1,9 @@
 from mock import Mock
 from nose.tools import assert_raises
 
-from eadrax.user.register import Registrant, Repository
 from eadrax.data import User
+from eadrax.user.register.usecase import Repository
+from eadrax.user.register.registrant import Registrant
 from eadrax.tools import Authenticator, Emailer, Encryptor, Formatter, Validator
 from eadrax.errors import AuthorisationError, ValidationError
 

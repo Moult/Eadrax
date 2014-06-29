@@ -1,4 +1,4 @@
-from .registrant import Registrant
+from eadrax.user.register.registrant import Registrant
 
 def load(**data):
     return Interactor(

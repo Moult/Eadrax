@@ -1,5 +1,9 @@
+import eadrax.user.register.usecase
+
 from mock import Mock
-from eadrax.user.register import usecase, Repository, Registrant
+
+from eadrax.user.register.usecase import Interactor, Repository
+from eadrax.user.register.registrant import Registrant
 from eadrax.tools import Authenticator, Emailer, Encryptor, Formatter, Validator
 
 def test_loading_a_usecase():
@@ -11,7 +15,7 @@ def test_loading_a_usecase():
     formatter = Mock(spec_set = Formatter)
     validator = Mock(spec_set = Validator)
 
-    interactor = usecase.load(
+    interactor = eadrax.user.register.usecase.load(
         user = user,
         repository = repository,
         authenticator = authenticator,
@@ -21,7 +25,7 @@ def test_loading_a_usecase():
         validator = validator
     )
 
-    assert isinstance(interactor, usecase.Interactor)
+    assert isinstance(interactor, Interactor)
 
 def test_interaction():
     registrant = Mock(spec_set = Registrant)
@@ -31,7 +35,7 @@ def test_interaction():
     registrant.register = Mock()
     registrant.send_welcome_message = Mock()
 
-    interactor = usecase.Interactor(registrant)
+    interactor = eadrax.user.register.usecase.Interactor(registrant)
     interactor.interact()
 
     registrant.authorise_guests.assert_called_once_with()

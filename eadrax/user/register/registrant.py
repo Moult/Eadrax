@@ -1,4 +1,4 @@
-from ...errors import AuthorisationError, ValidationError
+from eadrax.errors import AuthorisationError, ValidationError
 
 class Registrant(object):
 

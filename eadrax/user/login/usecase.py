@@ -1,4 +1,4 @@
-from ...errors import AuthorisationError
+from eadrax.errors import AuthorisationError
 
 def load(**data):
     return Interactor(

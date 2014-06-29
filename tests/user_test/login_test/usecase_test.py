@@ -1,7 +1,9 @@
+import eadrax.user.login.usecase
+
 from mock import Mock
 from nose.tools import assert_raises
 
-from eadrax.user.login import usecase, Repository, Interactor
+from eadrax.user.login.usecase import Interactor, Repository
 from eadrax.tools import Authenticator, Encryptor
 from eadrax.errors import AuthorisationError
 
@@ -14,7 +16,7 @@ authenticator = Mock(spec_set = Authenticator)
 encryptor = Mock(spec_set = Encryptor)
 
 def test_loading_a_usecase():
-    interactor = usecase.load(
+    interactor = eadrax.user.login.usecase.load(
         user = user,
         repository = repository,
         authenticator = authenticator,
