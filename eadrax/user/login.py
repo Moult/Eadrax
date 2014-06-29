@@ -23,8 +23,7 @@ class Usecase(object):
     def check_password(self):
         encrypted_password = self.repository.get_password_by_username(self.user.username)
 
-        if not self.encryptor.is_same_password(self.user.password,
-                                               encrypted_password):
+        if not self.encryptor.is_same_password(self.user.password, encrypted_password):
             raise AuthorisationError
 
     def login(self):

@@ -4,10 +4,12 @@ Eadrax is a diary for your creations, that allows you to create from anywhere.
 
 ## Usage
 
-In the example, `wipup` is the name of your delivery layer.
+In this example, `wipup` is the name of your delivery layer.
 
 ```
+import eadrax.data
 import eadrax.user.login
+from eadrax.errors import AuthorisationError
 
 usecase = eadrax.user.login.load(
     user = eadrax.data.User(),
@@ -16,7 +18,10 @@ usecase = eadrax.user.login.load(
     encryptor = wipup.tools.Encryptor()
 )
 
-usecase.run()
+try:
+    usecase.run()
+except AuthorisationError:
+    pass
 ```
 
 More detailed implementations can be seen in [WIPUP](http://github.com/Moult/wipup).
