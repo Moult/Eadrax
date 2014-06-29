@@ -1,9 +1,9 @@
-import eadrax.user.login.usecase
+import eadrax.user.login
 
 from mock import Mock
 from nose.tools import assert_raises
 
-from eadrax.user.login.usecase import Interactor, Repository
+from eadrax.user.login import Usecase, Repository
 from eadrax.tools import Authenticator, Encryptor
 from eadrax.errors import AuthorisationError
 
@@ -16,30 +16,25 @@ authenticator = Mock(spec_set = Authenticator)
 encryptor = Mock(spec_set = Encryptor)
 
 def test_loading_a_usecase():
-    interactor = eadrax.user.login.usecase.load(
+    usecase = eadrax.user.login.load(
         user = user,
         repository = repository,
         authenticator = authenticator,
         encryptor = encryptor
     )
-    assert isinstance(interactor, Interactor)
+    assert isinstance(usecase, Usecase)
 
-def test_interaction():
+def test_run():
     repository.get_password_by_username = Mock(return_value = 'encrypted_password')
     encryptor.is_same_password = Mock(return_value = False)
-
-    interactor = Interactor(user, repository, authenticator, encryptor)
-
-    assert_raises(AuthorisationError, interactor.interact)
-
-    assert interactor.user == user
+    usecase = Usecase(user, repository, authenticator, encryptor)
+    assert_raises(AuthorisationError, usecase.run)
     repository.get_password_by_username.assert_called_once_with('username')
     encryptor.is_same_password.assert_called_once_with('password',
-                                                          'encrypted_password')
+                                                       'encrypted_password')
 
     encryptor.is_same_password = Mock(return_value = True)
     repository.get_id_by_username = Mock(return_value = 'id')
-    authenticator.authenticate = Mock()
-    interactor.interact()
+    usecase.run()
     repository.get_id_by_username.assert_called_once_with('username')
     authenticator.authenticate.assert_called_once_with('id')

@@ -1,14 +1,14 @@
 from eadrax.errors import AuthorisationError
 
 def load(**data):
-    return Interactor(
+    return Usecase(
         data['user'],
         data['repository'],
         data['authenticator'],
         data['encryptor']
     );
 
-class Interactor(object):
+class Usecase(object):
 
     def __init__(self, user, repository, authenticator, encryptor):
         self.user = user
@@ -16,15 +16,15 @@ class Interactor(object):
         self.authenticator = authenticator
         self.encryptor = encryptor
 
-    def interact(self):
-        self.validate_password()
+    def run(self):
+        self.check_password()
         self.login()
 
-    def validate_password(self):
+    def check_password(self):
         encrypted_password = self.repository.get_password_by_username(self.user.username)
 
-        if self.encryptor.is_same_password(self.user.password,
-                                           encrypted_password) is False:
+        if not self.encryptor.is_same_password(self.user.password,
+                                               encrypted_password):
             raise AuthorisationError
 
     def login(self):

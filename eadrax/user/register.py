@@ -1,5 +1,35 @@
 from eadrax.errors import AuthorisationError, ValidationError
 
+def load(**data):
+    return Usecase(
+        Registrant(
+            data['user'],
+            data['repository'],
+            data['authenticator'],
+            data['emailer'],
+            data['encryptor'],
+            data['formatter'],
+            data['validator']
+        )
+    )
+
+class Usecase(object):
+
+    def __init__(self, registrant):
+        self.registrant = registrant
+
+    def run(self):
+        self.registrant.authorise()
+        self.registrant.validate()
+        self.registrant.encrypt_password()
+        self.registrant.register()
+        self.registrant.send_email()
+
+class Repository(object):
+
+    def save_user(self, **user):
+        raise NotImplementedError
+
 class Registrant(object):
 
     def __init__(self, user, repository, authenticator, emailer, encryptor, formatter, validator):
@@ -14,7 +44,7 @@ class Registrant(object):
         self.formatter = formatter
         self.validator = validator
 
-    def authorise_guests(self):
+    def authorise(self):
         if self.authenticator.get_authenticated_id():
             raise AuthorisationError
 
@@ -29,7 +59,7 @@ class Registrant(object):
         self.validator.add_required_rule('email')
         self.validator.add_email_rule('email')
         self.validator.add_email_domain_rule('email')
-        if self.validator.is_valid() is False:
+        if not self.validator.is_valid():
             raise ValidationError
 
     def encrypt_password(self):
@@ -37,10 +67,12 @@ class Registrant(object):
 
     def register(self):
         self.repository.save_user(
-            username = self.username
+            username = self.username,
+            password = self.password,
+            email = self.email
         )
 
-    def send_welcome_message(self):
+    def send_email(self):
         self.formatter.setup({
             'username': self.username
         })
