@@ -6,6 +6,9 @@ class Authenticator(object):
     def authenticate(self, id):
         raise NotImplementedError
 
+    def deauthenticate(self):
+        raise NotImplementedError
+
 class Formatter(object):
 
     def setup(self, dictionary):
